@@ -16,9 +16,7 @@ module.exports.register = (req, res, next) => {
                 res.send(err)
             }
         })
-        mongoose.connection.close()
     })
-
 }
 
 module.exports.getAllUsers = (req, res, next) => {
