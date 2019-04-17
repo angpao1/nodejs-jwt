@@ -1,6 +1,7 @@
 require('../configs/config')
 
 const mongoose = require('mongoose')
+const passport = require('passport')
 const User = require('../models/user.model')
 
 module.exports.register = (req, res, next) => {
@@ -42,12 +43,18 @@ module.exports.getAllUsers = (req, res, next) => {
 
 module.exports.authenticate = (req, res, next) => {
     // call for passport authentication
-    passport.authenticate('local', (err, user, info) => {
-        // error from passport middleware
-        if (err) return res.status(400).json(err);
-        // registered user
-        else if (user) return res.status(200).json({ "token": user.generateJwt() });
-        // unknown user or wrong password
-        else return res.status(404).json(info);
-    })(req, res);
+    mongoose.connect(process.env.MONGODB_URI, (err) => {
+        if (!err) { console.log('MongoDB connection succeeded. ') }
+        else { console.log('Error in MongoDB connection : ' + JSON.stringify(err, undefined, 2)) }
+    }).then(() => {
+        passport.authenticate('local', (err, user, info) => {
+            // error from passport middleware
+            if (err) return res.status(400).json(err);
+            // registered user
+            else if (user) return res.status(200).json({ "token": user.generateJwt() });
+            // unknown user or wrong password
+            else return res.status(404).json(info);
+        })(req, res);
+    })
+
 }
