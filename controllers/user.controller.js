@@ -12,6 +12,8 @@ module.exports.register = (req, res, next) => {
         user.save((err, doc) => {
             if (!err) {
                 res.status(201).send(doc)
+            } else {
+                res.send(err)
             }
         })
     })
