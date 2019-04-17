@@ -1,7 +1,9 @@
 {
     "development": {
         "PORT": 3000,
-        "MONGODB_URI": "mongodb://3.0.98.134:27017/NodeJsUser"
+        "MONGODB_URI": "mongodb://3.0.98.134:27017/NodeJsUser",
+        "JWT_SECRET": "SECRET#123",
+        "JWT_EXP": "5m"
     },
     "production": {
         "PORT": 80,
