@@ -16,6 +16,24 @@ module.exports.register = (req, res, next) => {
                 res.send(err)
             }
         })
+        mongoose.connection.close()
     })
 
+}
+
+module.exports.getAllUsers = (req, res, next) => {
+    mongoose.connect(process.env.MONGODB_URI, (err) => {
+        if (!err) { console.log('MongoDB connection succeeded. ') }
+        else { console.log('Error in MongoDB connection : ' + JSON.stringify(err, undefined, 2)) }
+    }).then(() => {
+        User.find().exec((err, users) => {
+            if (err) {
+                res.status(400).send(err)
+                mongoose.connection.close()
+            } else {
+                res.status(200).json(users)
+                mongoose.connection.close()
+            }
+        })
+    })
 }
